@@ -6,7 +6,7 @@ import Thankyou from "./components/Thankyou";
 import TravelPlanner from "./components/TravelPlanner";
 import SavedPlans from "./components/SavedPlans";
 import Home from "./components/Home";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
 
 const App = () => {
