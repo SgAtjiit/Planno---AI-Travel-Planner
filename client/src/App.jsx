@@ -7,7 +7,7 @@ import TravelPlanner from "./components/TravelPlanner";
 import SavedPlans from "./components/SavedPlans";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
