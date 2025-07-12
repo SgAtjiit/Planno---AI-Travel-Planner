@@ -38,16 +38,16 @@ const TravelPlanner = () => {
   });
 
   const searchCities = async (query, setSuggestions, setLoadingState) => {
-    const q = query.trim();
+    const q = query.trim().toLowerCase();
     if (q.length < 2) {
       setSuggestions([]);
       return;
     }
 
     const localResults = indianCities
-      .filter((c) => c.name.toLowerCase().includes(q.toLowerCase()))
+      .filter((c) => c.city.toLowerCase().includes(q))
       .map((c) => ({
-        city: c.name,
+        city: c.city,
         region: c.state || "",
         country: c.country || "IN",
       }));
@@ -72,18 +72,24 @@ const TravelPlanner = () => {
             types: "CITY",
           },
         });
-        const data = res.data.data.length
-          ? res.data.data
-          : (
-              await geoDbApi.get("/cities", {
-                params: {
-                  namePrefix: q.split(",")[0],
-                  limit: 5,
-                  countryIds: "IN",
-                },
-              })
-            ).data.data;
-        setSuggestions(data);
+        let results = res.data.data;
+        if (!results.length) {
+          results = (
+            await geoDbApi.get("/cities", {
+              params: {
+                namePrefix: q.split(",")[0],
+                limit: 5,
+                countryIds: "IN",
+              },
+            })
+          ).data.data;
+        }
+        const mapped = results.map((d) => ({
+          city: d.name,
+          region: d.region || "",
+          country: d.countryCode || "",
+        }));
+        setSuggestions(mapped);
       } catch {
         setSuggestions([]);
         setError("Failed to fetch city suggestions. Please try again.");
@@ -191,9 +197,9 @@ const TravelPlanner = () => {
               {loadingCities ? (
                 <li className="p-2 text-center text-gray-500">Searching...</li>
               ) : citySuggestions.length ? (
-                citySuggestions.map((c) => (
+                citySuggestions.map((c, i) => (
                   <li
-                    key={`${c.city}-${c.country}`}
+                    key={i}
                     className="p-2 hover:bg-blue-50 cursor-pointer"
                     onClick={() => selectCity(c)}
                   >
@@ -228,9 +234,9 @@ const TravelPlanner = () => {
               {loadingDestinations ? (
                 <li className="p-2 text-center text-gray-500">Searching...</li>
               ) : destinationSuggestions.length ? (
-                destinationSuggestions.map((c) => (
+                destinationSuggestions.map((c, i) => (
                   <li
-                    key={`${c.city}-${c.country}`}
+                    key={i}
                     className="p-2 hover:bg-blue-50 cursor-pointer"
                     onClick={() => selectDestination(c)}
                   >
