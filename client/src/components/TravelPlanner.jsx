@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import genAI from "../utils/gemini";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
+import CityInput from "../components/CityInput";
 
 const TravelPlanner = () => {
   const cleanText = (text) => {
@@ -87,16 +88,13 @@ const TravelPlanner = () => {
       </h1>
 
       <div className="bg-white shadow-md rounded-xl p-6 w-full max-w-xl space-y-4">
-        <input
-          type="text"
-          name="city"
-          placeholder="Enter your city"
+        <CityInput
           value={formData.city}
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
+
         <input
           type="text"
           name="destination"
