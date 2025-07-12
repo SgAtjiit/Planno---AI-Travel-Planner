@@ -8,6 +8,12 @@ const SavedPlans = () => {
   const cleanText = (text) => {
     return text.replace(/#/g, "").replace(/\*/g, "");
   };
+  const handleDelete = (idx) => {
+    const updated = plans.filter((_, i) => i !== idx);
+    setPlans(updated);
+    localStorage.setItem("travelPlans", JSON.stringify(updated));
+    alert("Plan deleted successfully!");
+  };
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("travelPlans")) || [];
@@ -50,6 +56,12 @@ const SavedPlans = () => {
                   {cleanText(plan.plan)}
                 </pre>
               </details>
+              <button
+                onClick={() => handleDelete(index)}
+                className="text-red-500 hover:text-red-700 ml-auto"
+              >
+                Delete
+              </button>
             </div>
           ))
         )}
