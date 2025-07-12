@@ -7,6 +7,7 @@ const TravelPlanner = () => {
   const cleanText = (text) => {
     return text.replace(/#/g, "").replace(/\*/g, "");
   };
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     destination: "",
@@ -19,6 +20,7 @@ const TravelPlanner = () => {
   const [submitted, setSubmitted] = useState(false);
   const [plan, setPlan] = useState("");
   const [loading, setLoading] = useState(false);
+
   const handleSubmit = async () => {
     if (
       !formData.destination ||
@@ -49,13 +51,11 @@ const TravelPlanner = () => {
         members: formData.members,
       };
 
-      // Store in localStorage
       const existing = JSON.parse(localStorage.getItem("travelPlans")) || [];
       existing.push(newPlan);
       localStorage.setItem("travelPlans", JSON.stringify(existing));
       setSubmitted(true);
       setPlan(text);
-
       alert("Your Plan is Ready");
     } catch (error) {
       console.error(error);
@@ -71,6 +71,7 @@ const TravelPlanner = () => {
     });
     setLoading(false);
   };
+
   useEffect(() => {
     const savedPlan = localStorage.getItem("tripPlan");
     if (savedPlan) {
@@ -78,9 +79,10 @@ const TravelPlanner = () => {
       setSubmitted(true);
     }
   }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center justify-start py-10 px-4">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center py-10 px-4">
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
         ✈️ AI Travel Planner
       </h1>
 
@@ -93,7 +95,7 @@ const TravelPlanner = () => {
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
         <input
           type="text"
@@ -103,9 +105,8 @@ const TravelPlanner = () => {
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
-
         <input
           type="number"
           name="nod"
@@ -114,7 +115,7 @@ const TravelPlanner = () => {
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
         <input
           type="number"
@@ -124,7 +125,7 @@ const TravelPlanner = () => {
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
         <input
           type="number"
@@ -134,9 +135,8 @@ const TravelPlanner = () => {
           onChange={(e) =>
             setFormData({ ...formData, [e.target.name]: e.target.value })
           }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
         />
-
         <button
           onClick={handleSubmit}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
@@ -144,6 +144,7 @@ const TravelPlanner = () => {
           Generate Travel Plan
         </button>
       </div>
+
       {loading && (
         <div className="flex justify-center mt-6">
           <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
@@ -160,7 +161,7 @@ const TravelPlanner = () => {
             <pre className="whitespace-pre-wrap font-sans text-gray-800">
               {cleanText(plan)}
             </pre>
-            <div className="flex justify-end gap-4 mt-4">
+            <div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
                 onClick={() => {
@@ -174,8 +175,9 @@ const TravelPlanner = () => {
           </div>
         </div>
       )}
+
       <button
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition mt-4"
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition mt-6"
         onClick={() => {
           navigate("/saved");
         }}

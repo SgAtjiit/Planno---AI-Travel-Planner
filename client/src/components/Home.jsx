@@ -8,8 +8,8 @@ const Home = () => {
     feedback: "",
   });
 
-  const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = () => {
     if (!formData.name || !formData.email || !formData.feedback) {
       alert("Please Enter all your details");
@@ -24,27 +24,25 @@ const Home = () => {
       setFormData({ name: "", email: "", feedback: "" });
     }
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-start px-4 py-10 space-y-10">
-      {/* Header */}
       <div className="text-center max-w-3xl">
         <h1 className="text-4xl md:text-5xl font-bold text-blue-800 mb-4">
           🌏 Welcome to AI Travel Planner
         </h1>
         <p className="text-lg md:text-xl text-gray-600">
-          Plan your dream trip in seconds using AI. Just enter your
-          destination,city,members, days, and budget – we’ll handle the rest!
+          Plan your dream trip in seconds using AI. Just enter your destination,
+          city, members, days, and budget – we’ll handle the rest!
         </p>
       </div>
 
-      {/* Hero Image */}
       <img
         src="./image1.jpeg"
         alt="Travel map"
-        className="rounded-xl shadow-lg w-2.5xl max-w-3xl"
+        className="rounded-xl shadow-lg w-full max-w-3xl object-cover"
       />
 
-      {/* CTA Buttons */}
       <div className="flex flex-col md:flex-row gap-4">
         <button
           onClick={() => navigate("/planner")}
@@ -59,6 +57,7 @@ const Home = () => {
           📚 View Saved Plans
         </button>
       </div>
+
       <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg shadow-md max-w-3xl mx-auto my-8">
         <p className="text-gray-700 text-lg leading-relaxed">
           🌍{" "}
@@ -99,6 +98,7 @@ const Home = () => {
             }
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+
           <input
             type="text"
             name="feedback"
@@ -110,7 +110,7 @@ const Home = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
-          <div className="flex gap-4 justify-between">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <button
               onClick={() => setFormData({ name: "", email: "", feedback: "" })}
               className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded"
