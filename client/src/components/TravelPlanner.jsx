@@ -10,11 +10,11 @@ const TravelPlanner = () => {
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    city: "",
     destination: "",
     nod: "",
-    budget: "",
-    city: "",
     members: "",
+    budget: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [plan, setPlan] = useState("");
@@ -37,62 +37,47 @@ const TravelPlanner = () => {
     },
   });
 
-  const searchCities = async (query, setSuggestions, setLoadingState) => {
+  const searchCities = (query, setSuggestions, setLoadingState) => {
     const q = query.trim().toLowerCase();
     if (q.length < 2) {
       setSuggestions([]);
       return;
     }
-
-    const localResults = indianCities
-      .filter((c) => c.city.toLowerCase().includes(q))
-      .map((c) => ({
-        city: c.city,
-        region: c.state || "",
-        country: c.country || "IN",
-      }));
-
-    if (localResults.length > 0) {
-      setSuggestions(localResults);
-      return;
-    }
-
     clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(async () => {
+      setLoadingState(true);
+      setError(null);
       try {
-        setLoadingState(true);
-        setError(null);
-        const res = await geoDbApi.get("/cities", {
+        const local = indianCities
+          .filter((c) => c.city.toLowerCase().includes(q))
+          .map((c) => ({
+            city: c.city,
+            region: c.state || "",
+            country: c.country || "IN",
+          }));
+
+        const globalRes = await geoDbApi.get("/cities", {
           params: {
             namePrefix: q,
-            limit: 5,
-            countryIds: "IN",
+            limit: 10,
             minPopulation: 10000,
             sort: "-population",
             types: "CITY",
           },
         });
-        let results = res.data.data;
-        if (!results.length) {
-          results = (
-            await geoDbApi.get("/cities", {
-              params: {
-                namePrefix: q.split(",")[0],
-                limit: 5,
-                countryIds: "IN",
-              },
-            })
-          ).data.data;
-        }
-        const mapped = results.map((d) => ({
-          city: d.name,
-          region: d.region || "",
-          country: d.countryCode || "",
-        }));
-        setSuggestions(mapped);
+        const global = globalRes.data.data
+          .map((d) => ({
+            city: d.name,
+            region: d.region || "",
+            country: d.countryCode || "",
+          }))
+          .filter((g) => !local.some((l) => l.city === g.city));
+
+        const combined = [...local, ...global].slice(0, 5);
+        setSuggestions(combined);
       } catch {
         setSuggestions([]);
-        setError("Failed to fetch city suggestions. Please try again.");
+        setError("Failed to fetch city suggestions");
       } finally {
         setLoadingState(false);
       }
@@ -102,14 +87,14 @@ const TravelPlanner = () => {
   const handleCityChange = async (e) => {
     const v = e.target.value;
     setFormData({ ...formData, city: v });
-    await searchCities(v, setCitySuggestions, setLoadingCities);
+    searchCities(v, setCitySuggestions, setLoadingCities);
     setShowCitySuggestions(true);
   };
 
   const handleDestinationChange = async (e) => {
     const v = e.target.value;
     setFormData({ ...formData, destination: v });
-    await searchCities(v, setDestinationSuggestions, setLoadingDestinations);
+    searchCities(v, setDestinationSuggestions, setLoadingDestinations);
     setShowDestinationSuggestions(true);
   };
 
@@ -132,30 +117,22 @@ const TravelPlanner = () => {
   };
 
   const handleSubmit = async () => {
-    if (
-      !formData.city ||
-      !formData.destination ||
-      !formData.nod ||
-      !formData.members ||
-      !formData.budget
-    ) {
-      alert("Please Enter all your details");
+    const { city, destination, nod, members, budget } = formData;
+    if (!city || !destination || !nod || !members || !budget) {
+      alert("Please enter all your details");
       return;
     }
-    setPlan("");
     setLoading(true);
-    const prompt = `Plan a ${formData.nod}-day trip to ${formData.destination} from ${formData.city} for ${formData.members} members within a budget of ₹${formData.budget}. Return a short itinerary in simple words.`;
+    const prompt = `Plan a ${nod}-day trip to ${destination} from ${city} for ${members} members within a budget of ₹${budget}. Return a short itinerary in simple words.`;
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-      const result = await model.generateContent([prompt]);
-      const response = await result.response;
-      const text = await response.text();
-      const newPlan = { ...formData, plan: text };
-      const existing = JSON.parse(localStorage.getItem("travelPlans")) || [];
-      existing.push(newPlan);
-      localStorage.setItem("travelPlans", JSON.stringify(existing));
-      setSubmitted(true);
+      const res = await (await model.generateContent([prompt])).response;
+      const text = await res.text();
+      const stored = JSON.parse(localStorage.getItem("travelPlans")) || [];
+      stored.push({ ...formData, plan: text });
+      localStorage.setItem("travelPlans", JSON.stringify(stored));
       setPlan(text);
+      setSubmitted(true);
       alert("Your Plan is Ready");
     } catch {
       alert("Error fetching plan. Try again.");
@@ -171,9 +148,7 @@ const TravelPlanner = () => {
     }
   };
 
-  useEffect(() => {
-    return () => clearTimeout(debounceTimer.current);
-  }, []);
+  useEffect(() => () => clearTimeout(debounceTimer.current), []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center py-10 px-4">
@@ -209,7 +184,7 @@ const TravelPlanner = () => {
               ) : (
                 <li className="p-2 text-center text-gray-500">
                   {formData.city.length
-                    ? "No cities found. Try a different name"
+                    ? "No cities found"
                     : "Type at least 2 characters"}
                 </li>
               )}
@@ -246,7 +221,7 @@ const TravelPlanner = () => {
               ) : (
                 <li className="p-2 text-center text-gray-500">
                   {formData.destination.length
-                    ? "No destinations found. Try a different name"
+                    ? "No destinations found"
                     : "Type at least 2 characters"}
                 </li>
               )}
