@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import genAI from "../utils/gemini";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const TravelPlanner = () => {
   const cleanText = (text) => {
@@ -16,10 +17,90 @@ const TravelPlanner = () => {
     city: "",
     members: "",
   });
+  const geoDbApi = axios.create({
+    baseURL: "https://wft-geo-db.p.rapidapi.com/v1/geo",
+    headers: {
+      "X-RapidAPI-Key": "50512256cfmsh1a2c951692c2e7fp1fe13djsn282b932224d6",
+      "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+    },
+  });
 
   const [submitted, setSubmitted] = useState(false);
   const [plan, setPlan] = useState("");
   const [loading, setLoading] = useState(false);
+  const [citySuggestions, setCitySuggestions] = useState([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
+  const [showDestinationSuggestions, setShowDestinationSuggestions] =
+    useState(false);
+  const [loadingCities, setLoadingCities] = useState(false);
+  const [loadingDestinations, setLoadingDestinations] = useState(false);
+  const [error, setError] = useState(null);
+
+  const debounceTimer = useRef(null);
+
+  const searchCities = async (query, setSuggestions, setLoadingState) => {
+    if (query.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        setLoadingState(true);
+        setError(null);
+        const response = await geoDbApi.get("/cities", {
+          params: {
+            namePrefix: query,
+            limit: 5,
+          },
+        });
+        setSuggestions(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+        setSuggestions([]);
+        setError("Failed to fetch city suggestions. Please try again.");
+
+        if (error.response) {
+          console.error("API Error:", error.response.data);
+        }
+      } finally {
+        setLoadingState(false);
+      }
+    }, 300);
+  };
+
+  const handleCityChange = async (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, city: value });
+    await searchCities(value, setCitySuggestions, setLoadingCities);
+    setShowCitySuggestions(true);
+  };
+
+  const handleDestinationChange = async (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, destination: value });
+    await searchCities(
+      value,
+      setDestinationSuggestions,
+      setLoadingDestinations
+    );
+    setShowDestinationSuggestions(true);
+  };
+
+  const selectCity = (city) => {
+    setFormData({ ...formData, city: `${city.city}, ${city.country}` });
+    setCitySuggestions([]);
+    setShowCitySuggestions(false);
+  };
+
+  const selectDestination = (city) => {
+    setFormData({ ...formData, destination: `${city.city}, ${city.country}` });
+    setDestinationSuggestions([]);
+    setShowDestinationSuggestions(false);
+  };
 
   const handleSubmit = async () => {
     if (
@@ -35,7 +116,7 @@ const TravelPlanner = () => {
 
     setPlan("");
     setLoading(true);
-    const prompt = `Plan a ${formData.nod}-day trip to ${formData.destination} from ${formData.city} for ${formData.members}members within a budget of ₹${formData.budget}. Return a short itinerary in simple words.`;
+    const prompt = `Plan a ${formData.nod}-day trip to ${formData.destination} from ${formData.city} for ${formData.members} members within a budget of ₹${formData.budget}. Return a short itinerary in simple words.`;
 
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -78,6 +159,10 @@ const TravelPlanner = () => {
       setPlan(savedPlan);
       setSubmitted(true);
     }
+
+    return () => {
+      clearTimeout(debounceTimer.current);
+    };
   }, []);
 
   return (
@@ -87,26 +172,78 @@ const TravelPlanner = () => {
       </h1>
 
       <div className="bg-white shadow-md rounded-xl p-6 w-full max-w-xl space-y-4">
-        <input
-          type="text"
-          name="city"
-          placeholder="Enter your city"
-          value={formData.city}
-          onChange={(e) =>
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-          }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        />
-        <input
-          type="text"
-          name="destination"
-          placeholder="Enter your destination"
-          value={formData.destination}
-          onChange={(e) =>
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-          }
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            name="city"
+            placeholder="Enter your city"
+            value={formData.city}
+            onChange={handleCityChange}
+            onFocus={() => setShowCitySuggestions(true)}
+            onBlur={() => setTimeout(() => setShowCitySuggestions(false), 200)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          />
+          {showCitySuggestions && (
+            <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+              {loadingCities ? (
+                <li className="p-2 text-center text-gray-500">Loading...</li>
+              ) : citySuggestions.length > 0 ? (
+                citySuggestions.map((city) => (
+                  <li
+                    key={`${city.city}-${city.country}`}
+                    className="p-2 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => selectCity(city)}
+                  >
+                    {city.city}, {city.country}
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 text-center text-gray-500">
+                  No results found
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+
+        <div className="relative">
+          <input
+            type="text"
+            name="destination"
+            placeholder="Enter your destination"
+            value={formData.destination}
+            onChange={handleDestinationChange}
+            onFocus={() => setShowDestinationSuggestions(true)}
+            onBlur={() =>
+              setTimeout(() => setShowDestinationSuggestions(false), 200)
+            }
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+          />
+          {showDestinationSuggestions && (
+            <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+              {loadingDestinations ? (
+                <li className="p-2 text-center text-gray-500">Loading...</li>
+              ) : destinationSuggestions.length > 0 ? (
+                destinationSuggestions.map((city) => (
+                  <li
+                    key={`${city.city}-${city.country}`}
+                    className="p-2 hover:bg-blue-50 cursor-pointer"
+                    onClick={() => selectDestination(city)}
+                  >
+                    {city.city}, {city.country}
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 text-center text-gray-500">
+                  No results found
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+
         <input
           type="number"
           name="nod"
