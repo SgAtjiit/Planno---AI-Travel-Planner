@@ -1,0 +1,566 @@
+[
+  {
+    "city": "Mumbai",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Delhi",
+    "region": "Delhi",
+    "country": "India"
+  },
+  {
+    "city": "Bangalore",
+    "region": "Karnataka",
+    "country": "India"
+  },
+  {
+    "city": "Hyderabad",
+    "region": "Telangana",
+    "country": "India"
+  },
+  {
+    "city": "Ahmedabad",
+    "region": "Gujarat",
+    "country": "India"
+  },
+  {
+    "city": "Chennai",
+    "region": "Tamil Nadu",
+    "country": "India"
+  },
+  {
+    "city": "Kolkata",
+    "region": "West Bengal",
+    "country": "India"
+  },
+  {
+    "city": "Surat",
+    "region": "Gujarat",
+    "country": "India"
+  },
+  {
+    "city": "Pune",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Jaipur",
+    "region": "Rajasthan",
+    "country": "India"
+  },
+  {
+    "city": "Lucknow",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Kanpur",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Nagpur",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Indore",
+    "region": "Madhya Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Thane",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Bhopal",
+    "region": "Madhya Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Visakhapatnam",
+    "region": "Andhra Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Pimpri-Chinchwad",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Patna",
+    "region": "Bihar",
+    "country": "India"
+  },
+  {
+    "city": "Vadodara",
+    "region": "Gujarat",
+    "country": "India"
+  },
+  {
+    "city": "Ghaziabad",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Ludhiana",
+    "region": "Punjab",
+    "country": "India"
+  },
+  {
+    "city": "Agra",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Nashik",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Faridabad",
+    "region": "Haryana",
+    "country": "India"
+  },
+  {
+    "city": "Meerut",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Rajkot",
+    "region": "Gujarat",
+    "country": "India"
+  },
+  {
+    "city": "Kalyan-Dombivli",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Vasai-Virar",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Varanasi",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Srinagar",
+    "region": "Jammu and Kashmir",
+    "country": "India"
+  },
+  {
+    "city": "Aurangabad",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Dhanbad",
+    "region": "Jharkhand",
+    "country": "India"
+  },
+  {
+    "city": "Amritsar",
+    "region": "Punjab",
+    "country": "India"
+  },
+  {
+    "city": "Navi Mumbai",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Allahabad",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Ranchi",
+    "region": "Jharkhand",
+    "country": "India"
+  },
+  {
+    "city": "Howrah",
+    "region": "West Bengal",
+    "country": "India"
+  },
+  {
+    "city": "Jabalpur",
+    "region": "Madhya Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Gwalior",
+    "region": "Madhya Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Coimbatore",
+    "region": "Tamil Nadu",
+    "country": "India"
+  },
+  {
+    "city": "Vijayawada",
+    "region": "Andhra Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Jodhpur",
+    "region": "Rajasthan",
+    "country": "India"
+  },
+  {
+    "city": "Madurai",
+    "region": "Tamil Nadu",
+    "country": "India"
+  },
+  {
+    "city": "Raipur",
+    "region": "Chhattisgarh",
+    "country": "India"
+  },
+  {
+    "city": "Kota",
+    "region": "Rajasthan",
+    "country": "India"
+  },
+  {
+    "city": "Chandigarh",
+    "region": "Chandigarh",
+    "country": "India"
+  },
+  {
+    "city": "Guwahati",
+    "region": "Assam",
+    "country": "India"
+  },
+  {
+    "city": "Solapur",
+    "region": "Maharashtra",
+    "country": "India"
+  },
+  {
+    "city": "Hubli-Dharwad",
+    "region": "Karnataka",
+    "country": "India"
+  },
+  {
+    "city": "Bareilly",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Moradabad",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Mysore",
+    "region": "Karnataka",
+    "country": "India"
+  },
+  {
+    "city": "Gurgaon",
+    "region": "Haryana",
+    "country": "India"
+  },
+  {
+    "city": "Aligarh",
+    "region": "Uttar Pradesh",
+    "country": "India"
+  },
+  {
+    "city": "Jalandhar",
+    "region": "Punjab",
+    "country": "India"
+  },
+  {
+    "city": "Tiruchirappalli",
+    "region": "Tamil Nadu",
+    "country": "India"
+  },
+  {
+    "city": "Bhubaneswar",
+    "region": "Odisha",
+    "country": "India"
+  },
+  {
+    "city": "Salem",
+    "region": "Tamil Nadu",
+    "country": "India"
+  },
+  {
+    "city": "Warangal",
+    "region": "Telangana",
+    "country": "India"
+  },
+  {
+    "city": "Notda",
+    "region": "West Bengal",
+    "country": "India"
+  },
+  {
+    "city": "Goa",
+    "region": "Goa",
+    "country": "India",
+    "type": "tourist",
+    "category": "beach"
+  },
+  {
+    "city": "Shimla",
+    "region": "Himachal Pradesh",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Manali",
+    "region": "Himachal Pradesh",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Darjeeling",
+    "region": "West Bengal",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Ooty",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Munnar",
+    "region": "Kerala",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Kodaikanal",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "tourist",
+    "category": "hill station"
+  },
+  {
+    "city": "Alleppey",
+    "region": "Kerala",
+    "country": "India",
+    "type": "tourist",
+    "category": "backwaters"
+  },
+  {
+    "city": "Pondicherry",
+    "region": "Puducherry",
+    "country": "India",
+    "type": "tourist",
+    "category": "heritage"
+  },
+  {
+    "city": "Udaipur",
+    "region": "Rajasthan",
+    "country": "India",
+    "type": "tourist",
+    "category": "heritage"
+  },
+  {
+    "city": "Jaisalmer",
+    "region": "Rajasthan",
+    "country": "India",
+    "type": "tourist",
+    "category": "desert"
+  },
+  {
+    "city": "Khajuraho",
+    "region": "Madhya Pradesh",
+    "country": "India",
+    "type": "tourist",
+    "category": "heritage"
+  },
+  {
+    "city": "Hampi",
+    "region": "Karnataka",
+    "country": "India",
+    "type": "tourist",
+    "category": "heritage"
+  },
+  {
+    "city": "Mahabalipuram",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "tourist",
+    "category": "heritage"
+  },
+
+  {
+    "city": "Varanasi",
+    "region": "Uttar Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Haridwar",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Rishikesh",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Ayodhya",
+    "region": "Uttar Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Mathura",
+    "region": "Uttar Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Vrindavan",
+    "region": "Uttar Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Amritsar",
+    "region": "Punjab",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "sikh"
+  },
+  {
+    "city": "Bodh Gaya",
+    "region": "Bihar",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "buddhist"
+  },
+  {
+    "city": "Sarnath",
+    "region": "Uttar Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "buddhist"
+  },
+  {
+    "city": "Ajmer",
+    "region": "Rajasthan",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "islam"
+  },
+  {
+    "city": "Velankanni",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "christian"
+  },
+  {
+    "city": "Shirdi",
+    "region": "Maharashtra",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Tirupati",
+    "region": "Andhra Pradesh",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Puri",
+    "region": "Odisha",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Dwarka",
+    "region": "Gujarat",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Badrinath",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Kedarnath",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Gangotri",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Yamunotri",
+    "region": "Uttarakhand",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Rameshwaram",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Madurai",
+    "region": "Tamil Nadu",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "hindu"
+  },
+  {
+    "city": "Palitana",
+    "region": "Gujarat",
+    "country": "India",
+    "type": "pilgrimage",
+    "religion": "jain"
+  },
+  {
+    "city": "Notda",
+    "region": "West Bengal",
+    "country": "India",
+    "type": "town"
+  }
+]

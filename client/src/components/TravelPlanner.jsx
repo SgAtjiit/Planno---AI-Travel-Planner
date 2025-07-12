@@ -3,6 +3,7 @@ import genAI from "../utils/gemini";
 import jsPDF from "jspdf";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import indianCities from "../assets/indianCities.json";
 
 const TravelPlanner = () => {
   const cleanText = (text) => {
@@ -17,6 +18,7 @@ const TravelPlanner = () => {
     city: "",
     members: "",
   });
+
   const geoDbApi = axios.create({
     baseURL: "https://wft-geo-db.p.rapidapi.com/v1/geo",
     headers: {
@@ -40,8 +42,19 @@ const TravelPlanner = () => {
   const debounceTimer = useRef(null);
 
   const searchCities = async (query, setSuggestions, setLoadingState) => {
-    if (query.length < 2) {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 2) {
       setSuggestions([]);
+      return;
+    }
+
+    // First check local database
+    const localResults = indianCities.filter((city) =>
+      city.name.toLowerCase().includes(trimmedQuery.toLowerCase())
+    );
+
+    if (localResults.length > 0) {
+      setSuggestions(localResults);
       return;
     }
 
@@ -51,13 +64,32 @@ const TravelPlanner = () => {
       try {
         setLoadingState(true);
         setError(null);
+
+        // First try with exact parameters
         const response = await geoDbApi.get("/cities", {
           params: {
-            namePrefix: query,
+            namePrefix: trimmedQuery,
             limit: 5,
+            countryIds: "IN",
+            minPopulation: 10000,
+            sort: "-population",
+            types: "CITY",
           },
         });
-        setSuggestions(response.data.data || []);
+
+        if (response.data.data.length === 0) {
+          // Try broader search if no results
+          const broaderResponse = await geoDbApi.get("/cities", {
+            params: {
+              namePrefix: trimmedQuery.split(",")[0], // Just city name
+              limit: 5,
+              countryIds: "IN",
+            },
+          });
+          setSuggestions(broaderResponse.data.data || []);
+        } else {
+          setSuggestions(response.data.data);
+        }
       } catch (error) {
         console.error("Error fetching city data:", error);
         setSuggestions([]);
@@ -91,13 +123,19 @@ const TravelPlanner = () => {
   };
 
   const selectCity = (city) => {
-    setFormData({ ...formData, city: `${city.city}, ${city.country}` });
+    const displayName = city.region
+      ? `${city.city}, ${city.region}, ${city.country}`
+      : `${city.city}, ${city.country}`;
+    setFormData({ ...formData, city: displayName });
     setCitySuggestions([]);
     setShowCitySuggestions(false);
   };
 
   const selectDestination = (city) => {
-    setFormData({ ...formData, destination: `${city.city}, ${city.country}` });
+    const displayName = city.region
+      ? `${city.city}, ${city.region}, ${city.country}`
+      : `${city.city}, ${city.country}`;
+    setFormData({ ...formData, destination: displayName });
     setDestinationSuggestions([]);
     setShowDestinationSuggestions(false);
   };
@@ -186,7 +224,7 @@ const TravelPlanner = () => {
           {showCitySuggestions && (
             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
               {loadingCities ? (
-                <li className="p-2 text-center text-gray-500">Loading...</li>
+                <li className="p-2 text-center text-gray-500">Searching...</li>
               ) : citySuggestions.length > 0 ? (
                 citySuggestions.map((city) => (
                   <li
@@ -194,12 +232,15 @@ const TravelPlanner = () => {
                     className="p-2 hover:bg-blue-50 cursor-pointer"
                     onClick={() => selectCity(city)}
                   >
-                    {city.city}, {city.country}
+                    {city.region ? `${city.city}, ${city.region}` : city.city},{" "}
+                    {city.country}
                   </li>
                 ))
               ) : (
                 <li className="p-2 text-center text-gray-500">
-                  No results found
+                  {formData.city.length > 0
+                    ? "No cities found. Try a different name"
+                    : "Type at least 2 characters"}
                 </li>
               )}
             </ul>
@@ -222,7 +263,7 @@ const TravelPlanner = () => {
           {showDestinationSuggestions && (
             <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
               {loadingDestinations ? (
-                <li className="p-2 text-center text-gray-500">Loading...</li>
+                <li className="p-2 text-center text-gray-500">Searching...</li>
               ) : destinationSuggestions.length > 0 ? (
                 destinationSuggestions.map((city) => (
                   <li
@@ -230,12 +271,15 @@ const TravelPlanner = () => {
                     className="p-2 hover:bg-blue-50 cursor-pointer"
                     onClick={() => selectDestination(city)}
                   >
-                    {city.city}, {city.country}
+                    {city.region ? `${city.city}, ${city.region}` : city.city},{" "}
+                    {city.country}
                   </li>
                 ))
               ) : (
                 <li className="p-2 text-center text-gray-500">
-                  No results found
+                  {formData.destination.length > 0
+                    ? "No destinations found. Try a different name"
+                    : "Type at least 2 characters"}
                 </li>
               )}
             </ul>
