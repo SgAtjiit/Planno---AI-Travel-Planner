@@ -87,13 +87,6 @@ const TravelPlanner = () => {
       </h1>
 
       <div className="bg-white shadow-md rounded-xl p-6 w-full max-w-xl space-y-4">
-        <CityInput
-          value={formData.city}
-          onChange={(e) =>
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-          }
-        />
-
         <input
           type="text"
           name="city"
