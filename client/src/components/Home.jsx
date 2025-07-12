@@ -63,8 +63,10 @@ const Home = () => {
           🌍{" "}
           <span className="font-semibold text-blue-700">AI Travel Planner</span>{" "}
           is your smart companion for stress-free trip planning! Just enter your{" "}
-          <span className="font-medium text-blue-600">destination</span>, number
-          of <span className="font-medium text-blue-600">days</span>, and your{" "}
+          <span className="font-medium text-blue-600">destination</span>, your{" "}
+          <span className="font-medium text-blue-600">city</span>, number of{" "}
+          <span className="font-medium text-blue-600">days</span>, number of{" "}
+          <span className="font-medium text-blue-600">members</span>, and your{" "}
           <span className="font-medium text-blue-600">budget</span> — and let AI
           instantly craft a personalized travel itinerary. Save and revisit your
           past plans anytime, all in one elegant interface. ✈️💼
